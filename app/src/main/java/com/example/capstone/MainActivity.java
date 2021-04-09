@@ -1,6 +1,9 @@
 package com.example.capstone;
 
+import android.app.SharedElementCallback;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.MenuItem;
@@ -9,6 +12,8 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.capstone.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -19,24 +24,18 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
-
-
-
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    // RecyclerView recyclerView;
     ArrayList<ContactModel> contactsList = new ArrayList<>(1);
     private RecyclerView mRecyclerView;
     private ExampleAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    //private TextView textContactAdded;
-    //private Button addContactButton;
-
 
 
     @Override
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -75,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
-
 
     public void SettingsTest(MenuItem item) {
 
@@ -131,17 +128,10 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyItemInserted(contactsList.size());
     }
 
-
-    /*public void openDialog() {
-        AddingDialog addDialog = new AddingDialog();
-        addDialog.show(getSupportFragmentManager(), "Adding Contact");
+    public void openSimpleChat(View view) {
+        Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
+        MainActivity.this.startActivity(switchToChat);
     }
-
-    public void applyTexts(String userContact) {
-    EditText line1 = findViewById(R.id.edittext_line_1);
-                insertItem(line1.getText().toString());
-    } */
-
 }
 
 

@@ -8,6 +8,7 @@
     app:cardCornerRadius="4dp">
 
     <RelativeLayout
+        android:onClick="openSimpleChat"
         android:layout_width="399dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"

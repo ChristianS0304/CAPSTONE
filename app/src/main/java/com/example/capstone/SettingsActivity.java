@@ -47,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
+
         SwitchPreference switch_btnK;
 
         Button switch_btn = findViewById(R.id.switch_btn);
@@ -65,22 +66,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
-
-
-
-    }
-
-
-    public void OpenSimpleChat(View view) {
-    }
-
-    public void GoingBack(View view) {
-        Intent switchToChat = new Intent(SettingsActivity.this, MainActivity.class);
-        SettingsActivity.this.startActivity(switchToChat);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
