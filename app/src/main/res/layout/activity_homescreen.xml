@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".HomescreenActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,12 +19,12 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="132dp"
-            android:layout_marginRight="132dp"
+            android:layout_marginTop="78dp"
+            android:layout_marginEnd="128dp"
+            android:layout_marginRight="128dp"
             app:srcCompat="@drawable/ic_loading_screen_app"
             tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="49dp"/>
+            tools:layout_editor_absoluteY="49dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -40,16 +41,16 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/signup_button"
+            android:id="@+id/register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_button"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="156dp"
-            android:layout_marginRight="156dp"
-            android:text="SIGN UP" />
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="152dp"
+            android:layout_marginRight="152dp"
+            android:text="REGISTER" />
 
         <Button
             android:id="@+id/login_button"
@@ -58,9 +59,11 @@
             android:layout_below="@+id/textView2"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="77dp"
-            android:layout_marginEnd="160dp"
-            android:layout_marginRight="160dp"
+            android:layout_marginTop="73dp"
+            android:layout_marginEnd="162dp"
+            android:layout_marginRight="162dp"
             android:text="LOGIN" />
+
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

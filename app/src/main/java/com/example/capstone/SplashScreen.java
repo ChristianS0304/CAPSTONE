@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.capstone.ui.login.LoginActivity;
+import com.example.capstone.HomescreenActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -31,12 +31,11 @@ public class SplashScreen extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    Intent i = new Intent (SplashScreen.this, LoginActivity.class);
+                    Intent i = new Intent (SplashScreen.this, HomescreenActivity.class);
                     startActivity(i);
                     finish();
                 }
             }, 3000);
         }
-
     }
 }
