@@ -1,5 +1,4 @@
 package com.example.capstone;
-
 import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +27,15 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private ExampleAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +52,40 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // ---------------- retrofit implementation ------------------------
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://my-json-server.typicode.com/ChristianS0304/JsonPlaceHolder/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        JsonApiContacts jsonPlaceHolderApi = retrofit.create(JsonApiContacts.class);
+        Call<ArrayList<ContactModel>> call = jsonPlaceHolderApi.getPosts();
+        call.enqueue(new Callback<ArrayList<ContactModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ContactModel>> call, Response<ArrayList<ContactModel>> response) {
+                if (!response.isSuccessful()) {
+                    //textViewResult.setText("Code: " + response.code());
+                    //return;
+                }
+                ArrayList<ContactModel> profile = response.body();
+                for (ContactModel post : profile) {
+                    String content = "";
+                    content += post.getLine1() + "\n";
+                    insertItem(content);
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<ContactModel>> call, Throwable t) {
+                //textViewResult.setText(t.getMessage());
+            }
+        });
+
+        // ---------------- retrofit implementation ------------------------
+
         loadData();
         buildRecyclerView();
         setInsertButton();
-
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -75,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SettingsTest(MenuItem item) {
-
         if (item.getItemId() == R.id.action_settings) {
             Intent switchToSettings = new Intent(MainActivity.this, SettingsActivity.class);
             MainActivity.this.startActivity(switchToSettings);
@@ -131,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
     public void openSimpleChat(View view) {
         Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
         MainActivity.this.startActivity(switchToChat);
+
     }
 }
-
-
