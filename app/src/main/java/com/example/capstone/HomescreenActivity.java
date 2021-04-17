@@ -23,7 +23,6 @@ public class HomescreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent MainIntent = new Intent(HomescreenActivity.this, LoginFinalActivity.class);
                 startActivity(MainIntent);
-                finish();
             }
         });
 
@@ -33,7 +32,6 @@ public class HomescreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent MainIntent = new Intent(HomescreenActivity.this, RegisterActivity.class);
                 startActivity(MainIntent);
-                finish();
             }
         });
     }
