@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.capstone.ui.login.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,9 +35,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-
 public class MainActivity extends AppCompatActivity {
-
+    //TextView username;
     private AppBarConfiguration mAppBarConfiguration;
     ArrayList<ContactModel> contactsList = new ArrayList<>(1);
     private RecyclerView mRecyclerView;
@@ -52,13 +50,21 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         // ---------------- retrofit implementation ------------------------
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://my-json-server.typicode.com/ChristianS0304/JsonPlaceHolder/")
+                .baseUrl("http://10.0.2.2:4000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+
+        /*
+        TODO: POST username logged in and match up with stored username in database and pull users that are tied to the username logged in
+        */
+
         JsonApiContacts jsonPlaceHolderApi = retrofit.create(JsonApiContacts.class);
         Call<ArrayList<ContactModel>> call = jsonPlaceHolderApi.getPosts();
         call.enqueue(new Callback<ArrayList<ContactModel>>() {
@@ -68,11 +74,19 @@ public class MainActivity extends AppCompatActivity {
                     //textViewResult.setText("Code: " + response.code());
                     //return;
                 }
-                ArrayList<ContactModel> profile = response.body();
-                for (ContactModel post : profile) {
+                ArrayList<ContactModel> name = response.body();
+                for (ContactModel post : name) {
                     String content = "";
                     content += post.getLine1() + "\n";
                     insertItem(content);
+
+                    /* Intent intent = getIntent();
+                    if (intent.getExtras() != null) {
+                        String passedUserName = intent.getStringExtra("data");
+                        if (passedUserName == content) {
+                            contactsList.remove((content));
+                        }
+                    }*/
                 }
             }
             @Override

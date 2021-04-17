@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.capstone.ui.login.LoginActivity;
+import com.example.capstone.LoginFinalActivity;
 
 
 public class HomescreenActivity extends AppCompatActivity {
@@ -21,7 +21,7 @@ public class HomescreenActivity extends AppCompatActivity {
         login_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent MainIntent = new Intent(HomescreenActivity.this, LoginActivity.class);
+                Intent MainIntent = new Intent(HomescreenActivity.this, LoginFinalActivity.class);
                 startActivity(MainIntent);
                 finish();
             }

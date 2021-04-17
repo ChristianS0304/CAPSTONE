@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 
 
 public interface JsonApiContacts {
-    @GET("profile")
+    @GET("users/")
     Call<ArrayList<ContactModel>> getPosts();
 }
 
