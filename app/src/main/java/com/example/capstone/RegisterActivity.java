@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register() {
-       RegisterRequest registerRequest = new RegisterRequest();
+        RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setUsername(username.getText().toString());
         registerRequest.setPassword(password.getText().toString());
         registerRequest.setEmail(email.getText().toString());
@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+
                     RegisterResponse registerResponse = response.body();
 
                     new Handler().postDelayed(new Runnable() {
@@ -68,7 +68,11 @@ public class RegisterActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = getSharedPreferences(PREF_LOGIN, MODE_PRIVATE).edit();
                             editor.putString(KEY_CREDENTIALS, "DUMMY CREDENTIALS");
                             editor.commit();
-                            startActivity(new Intent(RegisterActivity.this, MainActivity.class).putExtra("data", registerResponse.getUsername()));
+                            Toast.makeText(RegisterActivity.this, "Welcome " + registerResponse.getUsername() + "\n", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(RegisterActivity.this, HomescreenActivity.class));
+                            Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                            i.putExtra("data", registerResponse.getUsername());
+
                             finish();
                         }
                     }, 700);

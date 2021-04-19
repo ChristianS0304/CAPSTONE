@@ -59,18 +59,21 @@ public class LoginFinalActivity extends AppCompatActivity {
         }
         });
     }
+
     public void loginUser(LoginRequest loginRequest) {
         Call<LoginResponse> loginResponseCall = ApiClient.getService().loginUser(loginRequest);
         loginResponseCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful()) {
-                    LoginResponse loginResponse = response.body();
-                    Toast.makeText(LoginFinalActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            LoginResponse loginResponse = response.body();
+                            loginResponse.setUsername(username.getText().toString());
+                            Toast.makeText(LoginFinalActivity.this, "Welcome" + loginResponse, Toast.LENGTH_LONG).show();
                             SharedPreferences.Editor editor = getSharedPreferences(PREF_LOGIN, MODE_PRIVATE).edit();
                             editor.putString(KEY_CREDENTIALS, "DUMMY CREDENTIALS");
                             editor.commit();

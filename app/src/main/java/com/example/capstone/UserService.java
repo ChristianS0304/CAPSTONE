@@ -4,9 +4,12 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface UserService {
-    @POST("authenticate/")
+    @POST("login/")
     Call<LoginResponse> loginUser(@Body LoginRequest loginrequest);
 
-    @POST("users/")
+    @POST("register/")
     Call<RegisterResponse> RegisterUser(@Body RegisterRequest registerRequest);
+
+    @POST("users/")
+    Call<RegisterResponse> AddUser(@Body AddUserRequest addUserRequest);
 }

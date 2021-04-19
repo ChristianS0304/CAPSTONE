@@ -4,17 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,7 +44,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExampleAdapter.OnContactListener {
     //TextView username;
     private AppBarConfiguration mAppBarConfiguration;
     ArrayList<ContactModel> contactsList = new ArrayList<>(1);
@@ -51,51 +60,62 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        ActionBar actionBar = getSupportActionBar();
+        Intent intent = getIntent();
+        String passedUserName = intent.getStringExtra("data");
+        //Setting a dynamic title at runtime. Here, it displays the current time.
+        actionBar.setTitle(passedUserName);
 
-        // ---------------- retrofit implementation ------------------------
+
+
+
+        // ---------------- retrofit implementation START ------------------------
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:4000/")
+                .baseUrl("http://10.0.2.2:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        //TODO: POST username logged in and match up with stored username in database and pull users that are tied to the username logged in
 
-        /*
-        TODO: POST username logged in and match up with stored username in database and pull users that are tied to the username logged in
-        */
+
 
         JsonApiContacts jsonPlaceHolderApi = retrofit.create(JsonApiContacts.class);
         Call<ArrayList<ContactModel>> call = jsonPlaceHolderApi.getPosts();
         call.enqueue(new Callback<ArrayList<ContactModel>>() {
             @Override
             public void onResponse(Call<ArrayList<ContactModel>> call, Response<ArrayList<ContactModel>> response) {
+
+
                 if (!response.isSuccessful()) {
-                    //textViewResult.setText("Code: " + response.code());
-                    //return;
+                    Toast.makeText(MainActivity.this, "Error" + response.code(), Toast.LENGTH_LONG).show();
+                    return;
                 }
-                ArrayList<ContactModel> name = response.body();
-                for (ContactModel post : name) {
+
+                ArrayList<ContactModel> username = response.body();
+                for (ContactModel post : username) {
                     String content = "";
                     content += post.getLine1() + "\n";
+                    //String usernameContact = "";
+                    //usernameContact += post.getUsernameContact() + "\n";
                     insertItem(content);
-
-                    /* Intent intent = getIntent();
-                    if (intent.getExtras() != null) {
-                        String passedUserName = intent.getStringExtra("data");
-                        if (passedUserName == content) {
-                            contactsList.remove((content));
-                        }
-                    }*/
                 }
             }
+
+
+
             @Override
             public void onFailure(Call<ArrayList<ContactModel>> call, Throwable t) {
                 //textViewResult.setText(t.getMessage());
             }
         });
 
-        // ---------------- retrofit implementation ------------------------
+        // ---------------- retrofit implementation END ------------------------
+
+
+
+
 
         loadData();
         buildRecyclerView();
@@ -123,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
     }
 
     public void SettingsTest(MenuItem item) {
@@ -168,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycler_view_contacts);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mAdapter = new ExampleAdapter(contactsList);
+        mAdapter = new ExampleAdapter(contactsList, this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -181,6 +204,12 @@ public class MainActivity extends AppCompatActivity {
     public void openSimpleChat(View view) {
         Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
         MainActivity.this.startActivity(switchToChat);
+    }
 
+    @Override
+    public void onContactClick(int position) {
+        Intent intent = new Intent(this, SimpleChat.class);
+        intent.putExtra("usernameChat", String.valueOf(contactsList.get(position).getLine1()));
+        startActivity(intent);
     }
 }

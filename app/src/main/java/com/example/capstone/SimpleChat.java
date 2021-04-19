@@ -1,4 +1,5 @@
 package com.example.capstone;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Activity;
@@ -55,6 +56,18 @@ public class SimpleChat extends AppCompatActivity {
                     .replace(R.id.container, SimpleChatFragment.newInstance())
                     .commitNow();
         }
+
+
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null)
+        {
+            Intent intent = getIntent();
+            String passedUserName = intent.getStringExtra("usernameChat");
+            //Setting a dynamic title at runtime. Here, it displays the current time.
+            actionBar.setTitle(passedUserName);
+        }
+
 
         CustomAdapter adapter = new CustomAdapter(this, messagesList);
 

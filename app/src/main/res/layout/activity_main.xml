@@ -21,11 +21,16 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer" >
+
+
+
+    </com.google.android.material.navigation.NavigationView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -35,12 +40,10 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
-            android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginLeft="@dimen/fab_margin"
-            android:layout_marginTop="522dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginTop="570dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="22dp"
             app:backgroundTint="#10B7BB"
             app:srcCompat="@drawable/ic_baseline_message_24" />
 
@@ -48,14 +51,16 @@
             android:id="@+id/recycler_view_contacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
-            tools:listitem="@layout/contact_list"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginTop="125dp"
+            tools:listitem="@layout/contact_list">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <RelativeLayout
             android:id="@+id/bottomAppBarLayoutHolder"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="70dp">
 
             <EditText
                 android:id="@+id/edittext_line_1"
@@ -82,6 +87,7 @@
                 android:layout_marginEnd="18dp"
                 android:layout_marginRight="18dp"
                 android:text="+" />
+
         </RelativeLayout>
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

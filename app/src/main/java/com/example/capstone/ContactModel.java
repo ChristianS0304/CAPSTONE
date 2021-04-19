@@ -3,8 +3,9 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class ContactModel {
-    @SerializedName("name")
+    @SerializedName("username")
     private String mLine1;
+
     // Constructor
     public ContactModel(String line1) {
         mLine1 = line1;
