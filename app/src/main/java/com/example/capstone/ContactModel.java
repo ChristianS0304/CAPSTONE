@@ -3,9 +3,10 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class ContactModel {
-    @SerializedName("username")
+    @SerializedName("contact")
     private String mLine1;
-
+    //@SerializedName("username")
+    //private String mUserLoggedIn;
     // Constructor
     public ContactModel(String line1) {
         mLine1 = line1;
@@ -15,7 +16,3 @@ public class ContactModel {
         return mLine1;
     }
 }
-
-
-
-

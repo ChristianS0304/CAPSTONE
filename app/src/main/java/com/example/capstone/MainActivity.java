@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -45,7 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity implements ExampleAdapter.OnContactListener {
-    //TextView username;
+    String username;
     private AppBarConfiguration mAppBarConfiguration;
     ArrayList<ContactModel> contactsList = new ArrayList<>(1);
     private RecyclerView mRecyclerView;
@@ -65,51 +66,24 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         String passedUserName = intent.getStringExtra("data");
         //Setting a dynamic title at runtime. Here, it displays the current time.
         actionBar.setTitle(passedUserName);
-
+        username = passedUserName;
 
 
 
         // ---------------- retrofit implementation START ------------------------
 
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         //TODO: POST username logged in and match up with stored username in database and pull users that are tied to the username logged in
 
 
 
-        JsonApiContacts jsonPlaceHolderApi = retrofit.create(JsonApiContacts.class);
-        Call<ArrayList<ContactModel>> call = jsonPlaceHolderApi.getPosts();
-        call.enqueue(new Callback<ArrayList<ContactModel>>() {
-            @Override
-            public void onResponse(Call<ArrayList<ContactModel>> call, Response<ArrayList<ContactModel>> response) {
+        UsernameRequest usernameRequest = new UsernameRequest();
+        usernameRequest.setUsername(username);
+        populateUsers(usernameRequest);
 
-
-                if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Error" + response.code(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                ArrayList<ContactModel> username = response.body();
-                for (ContactModel post : username) {
-                    String content = "";
-                    content += post.getLine1() + "\n";
-                    //String usernameContact = "";
-                    //usernameContact += post.getUsernameContact() + "\n";
-                    insertItem(content);
-                }
-            }
+        //testingArray(usernameRequest);
 
 
 
-            @Override
-            public void onFailure(Call<ArrayList<ContactModel>> call, Throwable t) {
-                //textViewResult.setText(t.getMessage());
-            }
-        });
 
         // ---------------- retrofit implementation END ------------------------
 
@@ -182,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
             @Override
             public void onClick(View v) {
                 EditText line1 = findViewById(R.id.edittext_line_1);
-                insertItem(line1.getText().toString());
+                //insertItem(line1.getText().toString());
             }
         });
     }
@@ -212,4 +186,37 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         intent.putExtra("usernameChat", String.valueOf(contactsList.get(position).getLine1()));
         startActivity(intent);
     }
+
+
+    public void populateUsers(UsernameRequest usernameRequest) {
+        Call<UsernameResponse> usernameResponseCall = ApiClient.getService().getUser(usernameRequest);
+        usernameResponseCall.enqueue(new Callback<UsernameResponse>() {
+            @Override
+            public void onResponse(Call<UsernameResponse> call, Response<UsernameResponse> response) {
+                if(response.isSuccessful()) {
+
+                    ArrayList<ContactModel> userAdded = response.body();
+
+                    for (ContactModel post : userAdded) {
+                        String content = "";
+                        content += post.getLine1() + "\n";
+                        //String usernameContact = "";
+                        //usernameContact += post.getUsernameContact() + "\n";
+                        insertItem(content);
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<UsernameResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Throwable" +t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        });
+    }
+
+
 }

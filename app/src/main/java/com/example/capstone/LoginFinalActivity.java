@@ -80,7 +80,7 @@ public class LoginFinalActivity extends AppCompatActivity {
                             startActivity(new Intent(LoginFinalActivity.this, MainActivity.class).putExtra("data", loginResponse.getUsername()));
                             finish();
                         }
-                    }, 700);
+                    }, 200);
                 } else {
                     Toast.makeText(LoginFinalActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
                 }

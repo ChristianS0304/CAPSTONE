@@ -1,7 +1,11 @@
 package com.example.capstone;
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface UserService {
     @POST("login/")
@@ -10,6 +14,11 @@ public interface UserService {
     @POST("register/")
     Call<RegisterResponse> RegisterUser(@Body RegisterRequest registerRequest);
 
+
+    //TODO: figure out how to call nested arrays and replace below
     @POST("users/")
-    Call<RegisterResponse> AddUser(@Body AddUserRequest addUserRequest);
+    Call<UsernameResponse> getUser(@Body UsernameRequest usernameRequest);
+
+    @POST("users/")
+    Call<ArrayList<ContactModel>> getUsers(UsernameRequest ContactModel);
 }
