@@ -75,7 +75,8 @@ public class LoginFinalActivity extends AppCompatActivity {
                             loginResponse.setUsername(username.getText().toString());
                             Toast.makeText(LoginFinalActivity.this, "Welcome" + loginResponse, Toast.LENGTH_LONG).show();
                             SharedPreferences.Editor editor = getSharedPreferences(PREF_LOGIN, MODE_PRIVATE).edit();
-                            editor.putString(KEY_CREDENTIALS, "DUMMY CREDENTIALS");
+                            
+                            editor.putString(KEY_CREDENTIALS, String.valueOf(loginResponse));
                             editor.commit();
                             startActivity(new Intent(LoginFinalActivity.this, MainActivity.class).putExtra("data", loginResponse.getUsername()));
                             finish();

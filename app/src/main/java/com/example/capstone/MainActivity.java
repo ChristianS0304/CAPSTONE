@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.ActionBar;
@@ -45,14 +47,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity implements ExampleAdapter.OnContactListener {
+public class MainActivity extends AppCompatActivity {
     String username;
-    private AppBarConfiguration mAppBarConfiguration;
-    ArrayList<ContactModel> contactsList = new ArrayList<>(1);
-    private RecyclerView mRecyclerView;
-    private ExampleAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
+    EditText otherUser;
+    EditText nickName;
+    Button btnLogin;
+    EditText roomName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,62 +61,50 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         setSupportActionBar(toolbar);
 
 
-        ActionBar actionBar = getSupportActionBar();
+
+        //ActionBar actionBar = getSupportActionBar();
         Intent intent = getIntent();
         String passedUserName = intent.getStringExtra("data");
         //Setting a dynamic title at runtime. Here, it displays the current time.
-        actionBar.setTitle(passedUserName);
+        //actionBar.setTitle(passedUserName);
         username = passedUserName;
+        nickName = findViewById(R.id.userName);
+        otherUser = findViewById(R.id.roomName);
+        btnLogin = findViewById(R.id.enterChat);
 
-
-
-        // ---------------- retrofit implementation START ------------------------
-
-        //TODO: POST username logged in and match up with stored username in database and pull users that are tied to the username logged in
-
-
-
-        UsernameRequest usernameRequest = new UsernameRequest();
-        usernameRequest.setUsername(username);
-        populateUsers(usernameRequest);
-
-        //testingArray(usernameRequest);
-
-
-
-
-        // ---------------- retrofit implementation END ------------------------
-
-
-
-
-
-        loadData();
-        buildRecyclerView();
-        setInsertButton();
-
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        /* btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
-                MainActivity.this.startActivity(switchToChat);
+            public void onClick(View v) {
+                UsernameRequest usernameRequest = new UsernameRequest();
+                usernameRequest.setOtherUser(otherUser.getText().toString());
+                usernameRequest.setUsername(username);
+                populateUsers(usernameRequest);
+            }
+        }); */
+
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                otherUser = findViewById(R.id.userName);
+                roomName = findViewById(R.id.roomName);
+
+
+                if(TextUtils.isEmpty(otherUser.getText().toString()) || TextUtils.isEmpty(roomName.getText().toString())) {
+                    Toast.makeText(MainActivity.this, "Nickname or Chat Missing", Toast.LENGTH_LONG).show();
+                } else {
+
+
+                    Intent intent = new Intent(MainActivity.this, ChatRoomActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("userName", otherUser.getText().toString());
+                    extras.putString("roomName", roomName.getText().toString());
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
 
 
 
@@ -136,57 +124,6 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
         return true;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-
-    private void loadData() {
-
-        if (contactsList == null) {
-            contactsList = new ArrayList<>();
-        }
-    }
-
-    private void setInsertButton() {
-        Button buttonInsert = findViewById(R.id.addContact);
-        buttonInsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText line1 = findViewById(R.id.edittext_line_1);
-                //insertItem(line1.getText().toString());
-            }
-        });
-    }
-
-    private void buildRecyclerView() {
-        mRecyclerView = findViewById(R.id.recycler_view_contacts);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mAdapter = new ExampleAdapter(contactsList, this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void insertItem(String line1) {
-        contactsList.add(new ContactModel(line1));
-        mAdapter.notifyItemInserted(contactsList.size());
-    }
-
-    public void openSimpleChat(View view) {
-        Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
-        MainActivity.this.startActivity(switchToChat);
-    }
-
-    @Override
-    public void onContactClick(int position) {
-        Intent intent = new Intent(this, SimpleChat.class);
-        intent.putExtra("usernameChat", String.valueOf(contactsList.get(position).getLine1()));
-        startActivity(intent);
-    }
-
 
     public void populateUsers(UsernameRequest usernameRequest) {
         Call<UsernameResponse> usernameResponseCall = ApiClient.getService().getUser(usernameRequest);
@@ -194,18 +131,9 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
             @Override
             public void onResponse(Call<UsernameResponse> call, Response<UsernameResponse> response) {
                 if(response.isSuccessful()) {
-
-                    ArrayList<ContactModel> userAdded = response.body();
-
-                    for (ContactModel post : userAdded) {
-                        String content = "";
-                        content += post.getLine1() + "\n";
-                        //String usernameContact = "";
-                        //usernameContact += post.getUsernameContact() + "\n";
-                        insertItem(content);
-                    }
-
-
+                    UsernameResponse usernameResponse = response.body();
+                    usernameResponse.setOtherUser(otherUser.getText().toString());
+                    startActivity(new Intent(MainActivity.this, ChatRoomActivity.class).putExtra("data", usernameResponse.getOtherUser()));
                 }
 
             }
@@ -214,9 +142,6 @@ public class MainActivity extends AppCompatActivity implements ExampleAdapter.On
             public void onFailure(Call<UsernameResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Throwable" +t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
-
         });
     }
-
-
 }

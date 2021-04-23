@@ -19,6 +19,4 @@ public interface UserService {
     @POST("users/")
     Call<UsernameResponse> getUser(@Body UsernameRequest usernameRequest);
 
-    @POST("users/")
-    Call<ArrayList<ContactModel>> getUsers(UsernameRequest ContactModel);
 }

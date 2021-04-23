@@ -63,7 +63,7 @@ public class SimpleChat extends AppCompatActivity {
         if(actionBar != null)
         {
             Intent intent = getIntent();
-            String passedUserName = intent.getStringExtra("usernameChat");
+            String passedUserName = intent.getStringExtra("otherUser");
             //Setting a dynamic title at runtime. Here, it displays the current time.
             actionBar.setTitle(passedUserName);
         }

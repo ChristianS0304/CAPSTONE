@@ -1,22 +1,26 @@
 package com.example.capstone;
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-public class UsernameResponse extends ArrayList<ContactModel> implements Serializable {
+public class UsernameResponse implements Serializable {
 
-    private int user_id;
     private String username;
+    @SerializedName("otherUser")
+    private String otherUser;
 
-    public int getUser_id() {
-        return user_id;
+    public String getOtherUser() {
+        return otherUser;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setOtherUser(String otherUser) {
+        this.otherUser = otherUser;
     }
+
 
     public String getUsername() {
         return username;
@@ -26,16 +30,4 @@ public class UsernameResponse extends ArrayList<ContactModel> implements Seriali
         this.username = username;
     }
 
-
-    @NonNull
-    @Override
-    public Stream<ContactModel> stream() {
-        return null;
-    }
-
-    @NonNull
-    @Override
-    public Stream<ContactModel> parallelStream() {
-        return null;
-    }
 }

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:textColor="#FFFFFF"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/gradient_nav_bar"
+            android:background="#00BCD4"
             app:layout_anchor="@+id/appBarLayout"
             app:layout_anchorGravity="center">
         </androidx.appcompat.widget.Toolbar>
