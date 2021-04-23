@@ -7,8 +7,8 @@
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/ic_loading_screen_app"
+        android:label="Burner"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CAPSTONE">
@@ -17,6 +17,9 @@
             android:theme="@style/Theme.CAPSTONE.NoActionBar" />
 
         <activity android:name=".ChatRoomActivity"
+            android:theme="@style/Theme.CAPSTONE.NoActionBar"/>
+
+        <activity android:name=".ChatActivity"
             android:theme="@style/Theme.CAPSTONE.NoActionBar" />
 
         <activity android:name=".HomescreenActivity"
@@ -45,7 +48,8 @@
         <activity
             android:name=".MainActivity"
             android:label="UserName"
-            android:theme="@style/Theme.CAPSTONE.NoActionBar">
+            android:theme="@style/Theme.CAPSTONE.NoActionBar"
+            android:networkSecurityConfig="@xml/network_security_config">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

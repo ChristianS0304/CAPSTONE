@@ -1,10 +1,3 @@
-/**
- * @author Joyce Hong
- * @email soja0524@gmail.com
- * @created 2019-09-03
- * @desc
- */
-
 package com.example.capstone
 
 import android.content.Context

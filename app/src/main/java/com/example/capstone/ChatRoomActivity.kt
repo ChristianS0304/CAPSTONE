@@ -21,7 +21,6 @@ class ChatRoomActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var mSocket: Socket;
     lateinit var userName: String;
     lateinit var roomName: String;
-
     val gson: Gson = Gson()
 
     //For setting the recyclerView.
@@ -35,10 +34,9 @@ class ChatRoomActivity : AppCompatActivity(), View.OnClickListener {
         send.setOnClickListener(this)
         leave.setOnClickListener(this)
 
-        //Get the nickname and roomname from entrance activity.
+        //Get the nickname and roomName from entrance activity.
         try {
-            //ActionBar actionBar = getSupportActionBar();
-            val intent = intent
+            //ActionBar actionBar = getSupportActionBar()
             userName = intent.getStringExtra("userName")!!
             roomName = intent.getStringExtra("roomName")!!
         } catch (e: Exception) {
@@ -46,30 +44,33 @@ class ChatRoomActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
-        //Set Chatroom RecyclerView adapter
-        chatRoomAdapter = ChatRoomAdapter(this, chatList);
-        recyclerView.adapter = chatRoomAdapter;
 
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+        //Set Chatroom RecyclerView adapter
+
 
         //Let's connect to our Chat room! :D
-        try {
+
             //This address is the way you can connect to localhost with AVD(Android Virtual Device)
-            mSocket = IO.socket("http://10.0.2.2:3000")
-            Log.d("success", mSocket.id())
 
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.d("fail", "Failed to connect")
-        }
 
+
+
+
+
+        mSocket = IO.socket("http://10.0.2.2:3000/")
         mSocket.connect()
         //Register all the listener and callbacks here.
         mSocket.on(Socket.EVENT_CONNECT, onConnect)
         mSocket.on("newUserToChatRoom", onNewUser) // To know if the new user entered the room.
         mSocket.on("updateChat", onUpdateChat) // To update if someone send a message to chatroom
         mSocket.on("userLeftChatRoom", onUserLeft) // To know if the user left the chatroom.
+
+
+        chatRoomAdapter = ChatRoomAdapter(this, chatList)
+        recyclerView.adapter = chatRoomAdapter;
+
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager;
     }
 
 
@@ -78,7 +79,7 @@ class ChatRoomActivity : AppCompatActivity(), View.OnClickListener {
     var onConnect = Emitter.Listener {
         //After getting a Socket.EVENT_CONNECT which indicate socket has been connected to server,
         //send userName and roomName so that they can join the room.
-        val data = initialData(userName, roomName)
+        val data = InitialData(userName, roomName)
         val jsonData = gson.toJson(data) // Gson changes data object to Json type.
         mSocket.emit("subscribe", jsonData)
     }
@@ -135,7 +136,7 @@ class ChatRoomActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        val data = initialData(userName, roomName)
+        val data = InitialData(userName, roomName)
         val jsonData = gson.toJson(data)
 
         //Before disconnecting, send "unsubscribe" event to server so that
