@@ -1,109 +1,65 @@
 package com.example.capstone;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.Button;
-import android.widget.TextView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.content.SharedPreferences;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import androidx.appcompat.app.AppCompatDelegate;
-
-import static android.content.SharedPreferences.*;
-
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
 
+
+    public static final String PREF_LOGIN = "LOGIN_PREF";
+    public static final String KEY_CREDENTIALS = "LOGIN_CREDENTIALS";
+    Button logoutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-
-        /* toolbar.setTitleTextAppearance(this, R.style.comfortaaTextAppearance);
-
-        TextView textCustomTitle = (TextView) findViewById(R.id.custom_title);
-
-        // Custom font
-        Typeface customFont = Typeface.createFromAsset(this.getAssets(), "@font/comfortaa_regular.tff");
-
-        // Set
-        textCustomTitle.setTypeface(customFont);
-
-        setSupportActionBar(toolbar);
-
-        */
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 10);
+
+
+        EditText editText = findViewById(R.id.editText);
+        logoutButton = findViewById(R.id.logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
-            public void onClick(View view) {
-                Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
-                MainActivity.this.startActivity(switchToChat);
-            }
-        });
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = getSharedPreferences(PREF_LOGIN, MODE_PRIVATE).edit();
+                editor.clear().commit();
+                finish();
+                System.exit(0);
 
-        Button chatChange = findViewById(R.id.active_chat);
-        chatChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
-                MainActivity.this.startActivity(switchToChat);
             }
         });
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        findViewById(R.id.enterBtn)
+                .setOnClickListener(v -> {
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    intent.putExtra("name", editText.getText().toString());
+                    startActivity(intent);
 
-
-
+                });
 
     }
 
-    public void OpenSimpleChat(View view) {
-                Intent switchToChat = new Intent(MainActivity.this, SimpleChat.class);
-                MainActivity.this.startActivity(switchToChat);
-            }
-
-
-
     public void SettingsTest(MenuItem item) {
-
         if (item.getItemId() == R.id.action_settings) {
             Intent switchToSettings = new Intent(MainActivity.this, SettingsActivity.class);
             MainActivity.this.startActivity(switchToSettings);
@@ -116,13 +72,4 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-
-
 }

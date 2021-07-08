@@ -36,6 +36,4 @@
         android:defaultValue="true"
         android:key="switch_btnK"
         android:title="Night Mode" />
-
-
 </PreferenceScreen>

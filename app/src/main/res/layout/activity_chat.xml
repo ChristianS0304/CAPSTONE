@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity"
+    android:background="#00BCD4">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        android:layout_above="@id/messageEdit"/>
+
+    <EditText
+        android:id="@+id/messageEdit"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginRight="51dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toStartOf="@id/sendBtn"
+        android:layout_toLeftOf="@id/sendBtn"
+        android:background="#00BCD4"
+        android:hint="Send Message..."
+        android:padding="8dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sendBtn"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="18dp"
+        android:padding="10dp"
+        android:text="Send"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/pickImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-52dp"
+        android:layout_marginLeft="-52dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginRight="76dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@id/messageEdit"
+        android:layout_toRightOf="@id/messageEdit"
+        android:clickable="true"
+        android:padding="8dp"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_image_black_24dp" />
+
+</RelativeLayout>
